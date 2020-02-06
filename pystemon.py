@@ -791,14 +791,17 @@ user_agents_list = []
 def load_user_agents_from_file(filename):
     global user_agents_list
     try:
-        f = open(filename)
+        with open(filename) as f:
+            user_agent_list = f.readlines()
+
+#        f = open(filename)
+#        for line in f:
+#            line = line.strip()
+#            if line:
+#                user_agents_list.append(line)
+        logger.debug('Found {count} UserAgents in file "{file}"'.format(file=filename, count=len(user_agents_list)))
     except Exception as e:
         logger.error('Configuration problem: user-agent-file "{file}" not found or not readable: {e}'.format(file=filename, e=e))
-    for line in f:
-        line = line.strip()
-        if line:
-            user_agents_list.append(line)
-    logger.debug('Found {count} UserAgents in file "{file}"'.format(file=filename, count=len(user_agents_list)))
 
 
 def get_random_user_agent():
